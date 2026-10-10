@@ -4,6 +4,30 @@ One entry per resource. An entry is a markdown note in the catalog's wiki: front
 few fixed fields, then prose. The prose says what the thing is and anything the fields cannot
 carry. Keep it short; the entry points at the resource's own documentation, it does not repeat it.
 
+## What an entry may hold
+
+An entry says what the resource is, where it sits (the fields do that), and which document to read
+next. That is all of it.
+
+**It does not hold anything a tool can read back from the tree, or anything that is true only on the
+day it was looked at.** That covers counts of files or folders, sizes, git or tracking status,
+modification times, and what a folder currently contains. They go stale without anyone touching the
+catalog, and the tree answers them better. `observed` is the one dated field, and only for a
+placement recorded from outside its environment. A measurement worth keeping goes in the catalog's
+chronology, dated; *Keeping a catalog* in `SKILL.md` has the rule.
+
+**The test for each line:** if the folder changed tomorrow, would this line be wrong? Then leave it
+out. Existing entries in a catalog are not a guide to what is allowed: they may carry more than this,
+and the skill's text wins.
+
+```yaml
+# Too much: both numbers are stale by the next import
+description: "The datalake in the data folder: 27 lakehouses of source material, about 8 GB."
+
+# Enough
+description: "The datalake in the data folder: source material and what was built from it."
+```
+
 ## Two kinds of entry
 
 **Identity entries** describe something that is the same everywhere: a **project** or a **repo**.

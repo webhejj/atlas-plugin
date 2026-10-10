@@ -1,7 +1,7 @@
 ---
 name: atlas
 description: >-
-  Use this skill when work on a project starts from its catalog (the user names a project or workspace and the right checkouts and documents have to be found), or when a question runs past one repository: which project a directory belongs to, what a working copy is a checkout of, what depends on it, what has to be cloned first. Also for a project whose facts are shared in a project repository, for cataloging a region on request, and for adding a project's atlas pointer to its instructions. Runs on `/atlas` as well.
+  Use this skill when work on a project starts from its catalog (the user names a project or workspace and the right checkouts and documents have to be found), or when a question runs past one repository: which project a directory belongs to, what a working copy is a checkout of, what depends on it, what has to be cloned first. Also for a project whose facts are shared in a project repository, for cataloging a region on request, and for adding a project's atlas pointer to its instructions. Also before adding, editing or retiring any catalog entry ("add an atlas entry", "catalog this", "write an entry for", "update the atlas"), because what an entry may hold is stated here and not guessable from the entries already in a catalog. Runs on `/atlas` as well.
 ---
 
 # Atlas
@@ -128,8 +128,8 @@ placement types, **environment**, **workspace** and **material**, are at a path,
 section of the environment where that path is true. `unknown` is for something you looked at and
 could not place. A kind of thing a catalog wants to tell apart is a `subtype`, a free string, never
 a new type. Every entry files under a namespace, the catalog whose facts it carries, and only the
-catalog's own namespace holds placements. **Read `entries.md` beside this file** for the shape of
-an entry, where each kind goes, and what each type is for; the plugin's entry schema, found with
+catalog's own namespace holds placements. **Read `entries.md` beside this file before writing or
+editing one** for the shape of an entry, what it may hold, where each kind goes, and what each type is for; the plugin's entry schema, found with
 `atlas schema path <version>`, is what an entry is validated against.
 
 Four things decide most entries. A repo is the repository itself, and a project is a body of work;
