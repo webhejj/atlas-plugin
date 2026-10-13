@@ -108,7 +108,7 @@ changes nothing until the script runs again. `plugin.json` stays at `0.0.0`; a s
 it, and there is no marketplace to install from until a first release above that.
 
 **2. Remove any other copy.** A marketplace install of `atlas` loads beside this one, and the script
-refuses while one is there. A standalone copy of the skill from `gnagy/claude-skills`, at
+refuses while one is there. A standalone copy of the skill from `webhejj/claude-skills`, at
 `~/.agents/skills/atlas`, loads beside it too.
 
 ```shell

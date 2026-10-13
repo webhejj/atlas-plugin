@@ -31,7 +31,7 @@ own conventions and its own build. An entry is a few fields and a paragraph.
 ## Using it as a Claude Code skill
 
 `atlas` is a [Claude Code](https://claude.com/claude-code) skill in the `atlas` plugin,
-[gnagy/atlas-plugin](https://github.com/gnagy/atlas-plugin), which also ships the entry schema a
+[webhejj/atlas-plugin](https://github.com/webhejj/atlas-plugin), which also ships the entry schema a
 catalog is validated against, so the two are one version. It loads itself when work starts on a
 cataloged project or a question runs past one repository, and runs on `/atlas` when you want it
 deliberately. **Loading it is not permission to write.** The skill's own body says a catalog is
