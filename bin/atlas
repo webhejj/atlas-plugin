@@ -75,15 +75,18 @@ schema_path() {
   printf '%s\n' "$file"
 }
 
-# `atlas 0.0.0 (<commit>)`. The version is plugin.json's, which stays 0.0.0 for a
-# snapshot; the commit is what scripts/install recorded, so a checkout says so instead.
+# `atlas 0.1.0` from an install, `atlas 0.1.0 (working copy)` from a checkout, which
+# may hold changes the version does not cover. The version is plugin.json's.
 version() {
-  local manifest version stamp
+  local manifest version
   manifest="$(<"$ROOT/.claude-plugin/plugin.json")"
   [[ "$manifest" =~ \"version\"[[:space:]]*:[[:space:]]*\"([^\"]+)\" ]] || die "no version in $ROOT/.claude-plugin/plugin.json" 1
   version="${BASH_REMATCH[1]}"
-  if [[ -f "$ROOT/INSTALLED_FROM" ]]; then stamp="$(<"$ROOT/INSTALLED_FROM")"; else stamp="working copy"; fi
-  printf 'atlas %s (%s)\n' "$version" "$stamp"
+  if [[ -e "$ROOT/.git" ]]; then
+    printf 'atlas %s (working copy)\n' "$version"
+  else
+    printf 'atlas %s\n' "$version"
+  fi
 }
 
 config_file() {

@@ -6,12 +6,12 @@ names a schema version instead of keeping a copy.
 
 ## What it ships
 
-| Part                                  | What it is                                                                            |
-|---------------------------------------|---------------------------------------------------------------------------------------|
-| `skills/atlas/`                       | The skill, on `/atlas`: the model, the entry types, and a short introduction          |
-| `schemas/<version>/entry.schema.json` | The shape of an entry's front matter; `awt` validates a catalog against it            |
-| `bin/atlas`                           | The command line: where a schema is, and what the catalog has at a path               |
-| `hooks/`                              | A session-start hook that runs `atlas here` and passes the answer to the session      |
+| Part                                  | What it is                                                                       |
+|---------------------------------------|----------------------------------------------------------------------------------|
+| `skills/atlas/`                       | The skill, on `/atlas`: the model, the entry types, and a short introduction     |
+| `schemas/<version>/entry.schema.json` | The shape of an entry's front matter; `awt` validates a catalog against it       |
+| `bin/atlas`                           | The command line: where a schema is, and what the catalog has at a path          |
+| `hooks/`                              | A session-start hook that runs `atlas here` and passes the answer to the session |
 
 Schema versions follow Kubernetes: `v1alpha1` and `v1beta1` may change in place, `v1` is frozen
 once published. `v1alpha1` is the only one shipped so far.
@@ -94,26 +94,30 @@ loudly rather than skipping validation.
 
 ## Setup
 
-**1. Install from a checkout.** From this repository's root:
+**1. Install from the `webhejj` marketplace.**
 
 ```shell
-scripts/install
-atlas --version    # atlas 0.0.0 (<commit>)
+claude plugin marketplace add webhejj/claude-plugins
+claude plugin install atlas@webhejj
 ```
 
-The script copies the working copy (`git ls-files -co`) into `~/.claude/skills/atlas`, which Claude
-Code adopts as the plugin `atlas@skills-dir`, and links `~/.local/bin/atlas` into that copy. The
-commit it installed from is in `INSTALLED_FROM`, and `atlas --version` prints it. Editing the checkout
-changes nothing until the script runs again. `plugin.json` stays at `0.0.0`; a snapshot never bumps
-it, and there is no marketplace to install from until a first release above that.
-
-**2. Remove any other copy.** A marketplace install of `atlas` loads beside this one, and the script
-refuses while one is there. A standalone copy of the skill from `webhejj/claude-skills`, at
-`~/.agents/skills/atlas`, loads beside it too.
+Sessions get `atlas` on their `PATH` from the plugin's `bin/`. For a terminal, a build or an `awt`
+config, put a shim on yours; it runs whichever copy is installed, so updates need nothing more:
 
 ```shell
-claude plugin uninstall atlas@atlas-plugin
-claude plugin marketplace remove atlas-plugin
+~/.claude/plugins/marketplaces/webhejj/scripts/install-cli atlas
+atlas --version    # atlas 0.1.0
+```
+
+Auto-update is off for this marketplace. `claude plugin marketplace update webhejj` and then
+`claude plugin update atlas@webhejj` take a new release.
+
+**2. Remove any older copy.** An earlier install script put the plugin in `~/.claude/skills/atlas`,
+where Claude Code loads it as `atlas@skills-dir`; a standalone copy of the skill from
+`webhejj/claude-skills` may sit at `~/.agents/skills/atlas`. Either loads beside this one.
+
+```shell
+rm -rf ~/.claude/skills/atlas
 npx skills remove atlas -g -y
 ```
 
@@ -121,3 +125,19 @@ npx skills remove atlas -g -y
 `~/.config/atlas/catalogs`. `atlas here` in a cataloged directory shows whether it took.
 
 **Then start a new Claude Code session**; a running one keeps what it already loaded, hooks included.
+
+## Developing and releasing
+
+Try a change in one session without installing it:
+
+```shell
+claude --plugin-dir .
+```
+
+A `--plugin-dir` plugin replaces the installed `atlas` for that session only and writes nothing;
+`claude plugin list` still shows the installed one as enabled. Run `test/schema.sh` and
+`test/here.sh` before pushing.
+
+A release is a version bump in `.claude-plugin/plugin.json`, pushed to `master`. Claude Code updates
+an install only when that string changes, so a commit pushed without a bump reaches nobody who
+already has the plugin, while a fresh install takes `master` as it is. Keep `master` releasable.
